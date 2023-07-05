@@ -1,0 +1,40 @@
+.featuredProducts {
+    margin: 3em;
+  
+    .top {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2em;
+  
+      h1 {
+        text-transform: capitalize;
+      }
+
+    }
+  
+    .bottom{
+      display: flex;
+      justify-content: space-between;
+      gap: 1em;
+      margin: 0 1em;
+    }
+  }
+
+  @media only screen and (max-width: 670px) {
+    .featuredProducts {
+      margin: 3em 2em;
+    }
+
+    .bottom {
+      overflow-x: scroll;
+    }
+  }
+
+  @media only screen and (max-width: 1200px) {
+    .bottom {
+      overflow-x: scroll;
+    }
+  }
+
+
+

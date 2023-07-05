@@ -1,0 +1,38 @@
+.products {
+    padding: 1.5em;
+    display: flex;
+  
+    .left {
+      flex: 1;
+      position: sticky;
+      height: 100%;
+      top: 3.5em;
+  
+      .filterItem{
+        margin-bottom: 1.9em;
+  
+        h2{
+          font-weight: 400;
+          margin-bottom: 1.2em;
+        }
+  
+        .inputItem{
+          margin-bottom: 1em;
+          label{
+            margin-left: 1em;
+          }
+        }
+      }
+    }
+    
+    .right {
+      flex: 3;
+  
+      .catImg{
+        width: 100%;
+        height: 18em;
+        object-fit: cover;
+        margin-bottom: 2em;
+      }
+    }
+  }

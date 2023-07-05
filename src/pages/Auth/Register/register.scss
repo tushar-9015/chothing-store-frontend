@@ -1,0 +1,41 @@
+.signup {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .wrapper {
+        margin: 2em;
+        align-content: center;
+        justify-content: center;
+
+
+        h1 {
+            font-size: 1.9rem;
+            margin: 1em 2em;
+        }
+
+        .form-body {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+
+
+           .btn {
+            padding: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1em;
+            cursor: pointer;
+            border: none;
+            background-color: #2879fe;
+            color: white;
+            font-weight: 500;
+            margin-bottom: 1em;
+
+           }
+
+        }
+
+    }
+}
