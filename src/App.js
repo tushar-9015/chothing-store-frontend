@@ -1,13 +1,16 @@
-import { Children } from "react";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+// import { Children } from "react";
+import { Routes, Route,  createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/Home/Home";
 import Product from "./pages/Product/Product";
 import Products from "./pages/Products/Products";
 import "./app.scss"
-import Register from "./pages/Auth/Register/Register";
-import Login from "./pages/Auth/Login/Login";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import CartPage from "./pages/CartPage/CartPage"
+import WishlistPage from "./pages/WishlistPage/WishlistPage"
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute"
 
 const Layout = () => {
   return (
@@ -43,6 +46,20 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/",
+        element: <PrivateRoute />,
+        children: [
+          {
+            path: "/cart",
+            element: <CartPage />,
+          },
+          {
+            path: "/wishlist",
+            element: <WishlistPage />,
+          },
+        ]
       },
     ],
   },

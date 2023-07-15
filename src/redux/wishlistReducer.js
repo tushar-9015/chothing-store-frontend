@@ -10,14 +10,14 @@ export const wishlistSlice = createSlice({
     reducers: { 
         addToWishlist: (state, action) => {
             console.log(state, action);
-            const item = state.wishlistItems.find(_item => _item.id === action.payload.id);
+            const item = state.wishlistItems.find((item) => item.id === action.payload.item.id);
             if(item){
                 return;
             }
-            state.wishlistItems.push(action.payload);
+            state.wishlistItems.push(action.payload.item);
         },
         removeWishlistItem: (state, action) => {
-            state.wishlistItems = state.wishlistItems.filter((item) => item.id !== action.payload)
+            state.wishlistItems = state.wishlistItems.filter((item) => item.id !== action.payload.item_id)
         },
         resetWishlist: (state) => {
             state.wishlistItems = []

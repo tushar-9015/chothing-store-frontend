@@ -1,25 +1,23 @@
-import React, { useState } from 'react'
-import { MdOutlineFavoriteBorder, MdOutlinePersonOutline, MdOutlineShoppingCartCheckout} from 'react-icons/md'
+import React from 'react'
+import { MdFavorite, MdLogout} from 'react-icons/md'
+import { FaUserAlt} from 'react-icons/fa'
+import { HiShoppingCart} from 'react-icons/hi'
 import './navbar.scss';
-import {Link} from 'react-router-dom'
-import Cart from '../Cart/Cart';
-import Wishlist from '../Wishlist/Wishlist';
+import {NavLink} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
+import { logout  } from '../../redux/authSlice';
 
 function Navbar() {
-  const [open, setOpen] = useState({cart: false, wishlist: false});
   const products = useSelector((state) => state.cart.products);
+  const { userToken } = useSelector((state) => state.auth)
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
+  const dispatch = useDispatch()
   return (
     <nav className='navbar'>
       <div className='wrapper'>
         <div className='left'>
-          <div className='item'>
-            <Link className='link' to='/products/1'>Women</Link>
-          </div>
-          <div className='item'>
-            <Link className='link' to='/products/2'>Men</Link>
-          </div>
         </div>
         <div className='center'>
           <Link className='link' to='/'>ClothesBE</Link>
@@ -27,27 +25,74 @@ function Navbar() {
         <div className='right'>
         <div className='icons'>
           <div className='icon'>
-            <MdOutlinePersonOutline />
-          </div>
+          {userToken ? (
+            <NavLink
+              to="./login"
+              className="link"
+              onClick={() => dispatch(logout())}
+            >
+              <span className="badge nav-icon-badge">
+                <MdLogout />
+              </span>
+            </NavLink>
+          ) : (
+            <NavLink
+              to="./login"
+              className="link"
+            >
+              <span className="badge nav-icon-badge">
+                <FaUserAlt />
+              </span>
+            </NavLink>
+          )}
+        </div>
+            
+          {/* <Link className='link' to="./login"><MdOutlinePersonOutline onClick={()=>dispatch(logout())} /></Link>
+          </div> */}
           {/* wishlist-btn */}
-          <div className='icon-wishlist' onClick={() => setOpen({cart:false, wishlist: open.wishlist ? false : true})}>
-            <MdOutlineFavoriteBorder />
+          <NavLink
+           to="./wishlist"
+           className="link"
+           >
+            <span className="badge nav-icon-badge">
+              <MdFavorite />
+              {wishlistItems.length !== 0 && userToken && (
+                <span className="badge-count">{wishlistItems.length}</span>
+              )}
+            </span>
+           </NavLink>
+          {/* <div className='icon-wishlist' onClick={() => setOpen({cart:false, wishlist: open.wishlist ? false : true})}>
+            <MdFavorite />
             <span>{wishlistItems.length}</span>
-          </div>
+          </div> */}
+
+          <NavLink
+           to="./cart"
+           className="link"
+           >
+            <span className="badge nav-icon-badge">
+              <HiShoppingCart />
+              {products.length !== 0 && userToken && (
+                <span className="badge-count">{products.length}</span>
+              )}
+            </span>
+           </NavLink>
 
             {/* cart-btn */}
-          <div className='icon-cart' onClick={() => setOpen({cart: open.cart ? false: true, wishlist:false})}>
-          <MdOutlineShoppingCartCheckout />
+          {/* <div className='icon-cart' onClick={() => setOpen({cart: open.cart ? false: true, wishlist:false})}>
+          <HiShoppingCart/>
           <span>{products.length}</span>
-          </div>
-        </div>
+          </div> */}
         </div>
       </div>
+      </div>
       {/* {open && <Cart />} */}
-      {open.cart && <Cart /> }
-      {open.wishlist && <Wishlist /> }
+      {/* {open.cart && <Cart /> }
+      {open.wishlist && <Wishlist /> } */}
     </nav>
   )
 }
 
 export default Navbar
+
+

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { registerUser, userLogin } from './authAction'
 
 //initailize userToken from local storage
-const userToken = localStorage.getItem('userToken');
+ const userToken = localStorage.getItem('userToken');
 
 const initialState = {
   loading: false,
@@ -33,9 +33,11 @@ const authSlice = createSlice({
       state.error = null
     },
     [userLogin.fulfilled]: (state, { payload }) => {
+      const {user, jwt} = payload
+      state.userInfo = user
+      state.userToken = jwt
       state.loading = false
-      state.userInfo = payload
-      state.userToken = payload.userToken
+      state.success = true 
     },
     [userLogin.rejected]: (state, { payload }) => {
       state.loading = false

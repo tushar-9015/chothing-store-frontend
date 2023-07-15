@@ -2,12 +2,17 @@
 
 
 .navbar {
-  width: 100%;
-  margin: 0;
+  height: 5rem;
+  box-shadow: 0 0 0.625rem rgb(116, 114, 114);
+  top: 0;
+  z-index: 6;
+  position: sticky;
+  background-color: white;
+  cursor: pointer;
 
   .wrapper {
     min-height: 3em;
-    margin: 0 1.5em;
+    margin: 0 1.3em;
     padding: 1em;
     display: flex;
     align-items: center;
@@ -39,17 +44,17 @@
 
       .icons {
         display: flex;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         gap: 1.3em;
         color: #777;
         cursor: pointer;
 
 
-        .icon-wishlist {
+        .nav-icon-badge {
           position: relative;
         }
 
-        .icon-wishlist span {
+        .badge-count {
             font-size: 12px;
             width: 20px;
             height: 20px;
@@ -57,31 +62,32 @@
             background-color: rgb(56, 146, 243);
             color: white;
             position:absolute;
-            right: -10px;
-            top: -10px;
+            right: -8px;
+            top: -8px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .icon-cart {
-          position: relative;
-        }
+        // .icon-cart {
+        //   position: relative;
+        //   font-size: 1.6rem;
+        // }
         
-          .icon-cart span {
-            font-size: 12px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50px;
-            background-color: rgb(56, 146, 243);
-            color: white;
-            position:absolute;
-            right: -10px;
-            top: -10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
+        //   .icon-cart span {
+        //     font-size: 12px;
+        //     width: 20px;
+        //     height: 20px;
+        //     border-radius: 50px;
+        //     background-color: rgb(56, 146, 243);
+        //     color: white;
+        //     position:absolute;
+        //     right: -10px;
+        //     top: -10px;
+        //     display: flex;
+        //     align-items: center;
+        //     justify-content: center;
+        //   }
         
       }
     }
@@ -94,25 +100,24 @@
     width: 100%;
 
     .wrapper {
-      min-height: 3em;
-      margin: 0 1.5em;
-      padding: 1em;
-      // display: flex;
-      // align-items: center;
-      // justify-content: space-between;
-
-      .items {
-        display: flex;
-        align-items: center;
-        font-size: 1.2rem;
-        justify-content: space-between;
-
-      }
-
-      .left {
-        display: none;
-      }
+      justify-content: flex-end;
+      gap: 2em;
+    
+     .center {
+      margin-right: 1em;
+     }
   
+  }
+
+  .right {
+    // background-color: red;
+    display: flex;
+
+
+  }
+
+  .left {
+    display: none;
   }
 
 }

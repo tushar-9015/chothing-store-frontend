@@ -11,13 +11,9 @@ const Contact = () => {
             <input type='text' placeholder='Enter your e-mail...'/>
             <button>JOIN US</button>
             <div className='contact-icons'>
-                <TiSocialGooglePlus />
-                <TiSocialFacebook />
-                <TiSocialInstagram />
-                <TiSocialLinkedin />
-                <TiSocialGithub />
-                <TiSocialTwitter />
-
+                <TiSocialLinkedin className='contact-icons-icon'/>
+                <TiSocialGithub className='contact-icons-icon'/>
+                <TiSocialTwitter className='contact-icons-icon'/>
             </div>
         </div>
       </div>

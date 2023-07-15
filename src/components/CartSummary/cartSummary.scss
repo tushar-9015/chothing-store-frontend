@@ -1,0 +1,58 @@
+.cart-summary {
+    display: flex;
+    width: 30em;
+    padding: 1em 2em;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.77);
+    -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.77);
+    -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.77);
+
+.price-detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.1rem;
+    margin-bottom: 0.5em;
+  }
+  
+  .price-detail-row span:first-child {
+    font-weight: bold;
+  }
+  
+  .delivery-charges {
+    font-weight: bold;
+  }
+  
+  .delivery-charges::before {
+    content: "₹99";
+    text-decoration: line-through;
+    margin-right: 0.5em;
+    color: gray;
+  }
+  
+  .total-amount {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 1em;
+  }
+  
+  .checkout-btn {
+    padding: 0.6em 1.25em;
+    font-size: 1.1rem;
+    border: none;
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    margin-top: 1em;
+    font-weight: bold;
+    border-radius: 0.3rem;
+  }
+  
+  .checkout-btn:hover {
+    background-color: black;
+  }
+
+}
+  

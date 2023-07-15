@@ -1,0 +1,46 @@
+.form-container {
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // border: 1px solid red;
+
+    h2 {
+        margin: 1em 0;
+        font-size: 2rem;
+    }
+
+    .form {
+        height: 80%;
+        width: 50%;
+        // border: 2px solid palegreen;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1.2em;
+    }
+
+    input  {
+        width: 50%;
+        height: 4em;
+        border: none;
+        border-bottom: 1px solid gray;
+    }
+
+    .form-btn{
+        background-color: rgb(44, 68, 147);
+        color: white;
+        width: 50%;
+        height: 4em;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .btn-link-primary{
+        color: rgb(44, 68, 147)
+
+    }
+
+}
+
