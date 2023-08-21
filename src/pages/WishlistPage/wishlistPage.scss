@@ -1,8 +1,11 @@
 .wishlistPage {
+    margin: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    // padding: auto; 
+    // background-color: red;
 
     h2 {
     font-size: 2rem;
@@ -10,4 +13,12 @@
     display: flex;
     justify-content: center;
     }
+  }
+
+  @media only screen and (max-width: 900px) {
+  //  .wishlistPage {
+  //   margin: 3em 1em;
+  //  }
+
+
   }

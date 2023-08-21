@@ -5,7 +5,7 @@ import "./wishlistPage.scss"
 const WishlistPage = () => {
   return (
     <div className='wishlistPage'>
-      <h2>My Cart</h2>
+      <h2>My Wishlist</h2>
       <Wishlist />
       {/* <h1>mngo</h1> */}
     </div>

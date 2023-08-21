@@ -72,7 +72,7 @@ const Register = () => {
           onChange={handleChange}
         />
         <input
-          name="password"
+          name="confirmPassword"
           placeholder='confirmPassword'
           value={signupForm.confirmPassword}
           onChange={handleChange}

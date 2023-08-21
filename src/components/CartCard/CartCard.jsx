@@ -25,7 +25,7 @@ const CartCard = ({ item }) => {
   return (
     <div className='cartCard'>
       <div className="img-container">
-        <img src={ process.env.REACT_APP_UPLOAD_URL + item?.img} alt='' />
+        <img src={ item?.img} alt='' />
       </div>
         <div className='details'>
           <h3>{toCapitalCase(title)}</h3>
