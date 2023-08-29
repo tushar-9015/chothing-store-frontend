@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import WishlistCard from '../WishlistCard/WishlistCard'
 
+
 const Wishlist = () => {
     const wishlistItems = useSelector((state)=>state.wishlist.wishlistItems)
   return (

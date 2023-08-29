@@ -34,6 +34,7 @@ const Product = () => {
           desc: data.attributes.desc,
           price: data.attributes.price,
           img: data.attributes.img.data.attributes.url,
+          quantity: 1,
           }
         })
       )

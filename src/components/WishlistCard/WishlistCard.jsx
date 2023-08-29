@@ -4,7 +4,8 @@ import { addToCart } from '../../redux/cartReducer'
 import { removeWishlistItem } from '../../redux/wishlistReducer'
 import "./wishlistCard.scss"
 import {TiShoppingCart } from 'react-icons/ti';
-import { MdOutlineFavorite } from 'react-icons/md'
+import { MdOutlineRemoveCircleOutline } from 'react-icons/md'
+import { Link } from 'react-router-dom'
 
 const WishlistCard = ({ item }) => {
   const title = item?.title ?? ''
@@ -24,10 +25,11 @@ const WishlistCard = ({ item }) => {
         return newSentence;
     }
   return (
+   
     <div className='wishlistCard'>
-      <div className="img-container">
-      <img src={ item?.img} alt='' />
-      </div>
+       <Link className="link" to={`/product/${item.id}`}>
+      <img className='img'src={ item?.img} alt='' />
+      </Link>
         <div className='details'>
           <h3>{toCapitalCase(title)}</h3>
             {/* <p>{item.desc?.substring(0, 100)}</p> */}
@@ -46,12 +48,13 @@ const WishlistCard = ({ item }) => {
               className="add"
               onClick={() => dispatch(removeWishlistItem({item_id: item.id}))}
             >
-              <MdOutlineFavorite /> ADD TO WISHLIST
+             <MdOutlineRemoveCircleOutline /> REMOVE 
             </button>
           </div>
 
         </div>
     </div>
+
   )
 }
 

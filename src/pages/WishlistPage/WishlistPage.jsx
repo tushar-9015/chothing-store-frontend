@@ -6,7 +6,7 @@ const WishlistPage = () => {
   return (
     <div className='wishlistPage'>
       <h2>My Wishlist</h2>
-      <Wishlist />
+      <Wishlist className='wishlist' />
       {/* <h1>mngo</h1> */}
     </div>
   )

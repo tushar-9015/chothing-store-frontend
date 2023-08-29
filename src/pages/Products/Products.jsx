@@ -72,7 +72,7 @@ const Products = () => {
               name="price"
               onChange={(e) => setSort("asc")}
             />
-            <label htmlFor="asc">Price (Lowest first)</label>
+            <label htmlFor="asc">Lowest Price</label>
           </div>
           <div className="inputItem">
             <input
@@ -82,7 +82,7 @@ const Products = () => {
               name="price"
               onChange={(e) => setSort("desc")}
             />
-            <label htmlFor="desc">Price (Highest first)</label>
+            <label htmlFor="desc">Highest Price</label>
           </div>
         </div>
       </div>
