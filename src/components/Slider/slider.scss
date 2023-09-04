@@ -1,5 +1,5 @@
 .slider{
-    height: calc(100vh - 4rem);
+    height: calc(100vh - 5em);
     width: 100%;
     position: relative;
     overflow: hidden;
@@ -36,5 +36,16 @@
         justify-content: center;
         cursor: pointer;
       }
+    }
+  }
+
+  @media (max-width:600px) {
+    .slider{
+      height: calc(100vh - 10em);
+
+     .container {
+      height: 95%;
+     }
+
     }
   }

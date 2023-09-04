@@ -1,23 +1,29 @@
 .products {
-    padding: 1.5em;
+    margin: 1em;
     display: flex;
   
     .left {
       flex: 1;
       position: sticky;
       height: 100%;
-      top: 3.5em;
+      top: 5.5em;
+      padding: 0.5em;
+      text-align: left;
   
       .filterItem{
-        margin-bottom: 1.9em;
+        margin: 1em;
+        color: red($color: #000000);
   
         h2{
           font-weight: 400;
-          margin-bottom: 1.2em;
+          font-size: 1.5rem;
+          margin-bottom: 0.8em;
+          gap: 1em;
         }
   
         .inputItem{
-          margin-bottom: 1em;
+          margin-bottom: 10px;
+          font-size: 1.2rem;
           label{
             margin-left: 1em;
           }
@@ -36,3 +42,48 @@
       }
     }
   }
+
+  @media only screen and (max-width: 1000px) {
+    .products {
+       flex-direction: column;
+
+       .left{
+        top: 0;
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-around;
+       }
+    }
+  }
+
+  @media only screen and (max-width: 800px){
+    .left {
+      .filterItem{
+        margin: 0.5em;
+        color: red($color: #000000);
+  
+        h2{
+          font-weight: 400;
+          font-size: 1.3rem;
+          margin-bottom: 0.8em;
+          gap: 1em;
+        }
+  
+        .inputItem{
+          margin-bottom: 10px;
+          font-size: 1rem;
+          label{
+            margin-left: 0;
+          }
+        }
+      }
+    }
+    
+  }
+
+
+
+
+
+  

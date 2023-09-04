@@ -34,6 +34,7 @@ const Product = () => {
           desc: data.attributes.desc,
           price: data.attributes.price,
           img: data.attributes.img.data.attributes.url,
+          quantity: 1,
           }
         })
       )
@@ -61,46 +62,120 @@ const Product = () => {
     }
   }
   return (
+    // <div className="product">
+    //   {loading ? (
+    //     "loading"
+    //   ) : (
+    //     <>
+    //       <div className="left">
+    //         <div className="images">
+    //           <img className='apple'
+    //             src={
+    //               data?.attributes?.img?.data?.attributes?.url
+    //             }
+    //             alt=""
+    //             onClick={(e) => setSelectedImg("img")}
+    //           />
+    //           <img className='apple'
+    //             src={
+    //               data?.attributes?.img2?.data?.attributes?.url
+    //             }
+    //             alt=""
+    //             onClick={(e) => setSelectedImg("img2")}
+    //           />
+    //         </div>
+    //         <div className="mainImg">
+    //           <img
+    //             src={
+    //               data?.attributes[selectedImg]?.data?.attributes?.url
+    //             }
+    //             alt=""
+    //           />
+    //         </div>
+    //       </div>
+    //       <div className="right">
+    //         <h1>{data?.attributes?.title}</h1>
+    //         <span className="price">₹{data?.attributes?.price}</span>
+    //         <p>{data?.attributes?.desc}</p>
+    //         <div className="quantity">
+    //           <button
+    //             onClick={() =>
+    //               setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
+    //             }
+    //           >
+    //             -
+    //           </button>
+    //           {quantity}
+    //           <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
+    //         </div>
+    //         <div className='move-to'>
+    //         <button
+    //           className="add"
+    //           onClick={toggleCart}
+    //         >
+    //           <TiShoppingCart /> ADD TO CART
+    //         </button>
+    //         <button
+    //           className="add"
+    //           onClick={toggleWishlist}
+    //         >
+    //           <MdOutlineFavorite /> ADD TO WISHLIST
+    //         </button>
+    //         </div>
+    //         <div className="info">
+    //           <span>Vendor: Polo</span>
+    //           <span>Product Type: T-Shirt</span>
+    //           <span>Tag: T-Shirt, Women, Top</span>
+    //         </div>
+    //         <hr />
+    //         <div className="info">
+    //           <span>DESCRIPTION</span>
+    //           <hr />
+    //           <span>ADDITIONAL INFORMATION</span>
+    //           <hr />
+    //           <span>FAQ</span>
+    //         </div>
+    //       </div>
+    //     </>
+    //   )}
+    // </div>
+    <>
     <div className="product">
-      {loading ? (
-        "loading"
-      ) : (
-        <>
-          <div className="left">
-            <div className="images">
-              <img
+      <div className="left">
+        <div className="images">
+          <div className="main-img">
+            <img className='imgd'
                 src={
-                  process.env.REACT_APP_UPLOAD_URL +
+                  data?.attributes[selectedImg]?.data?.attributes?.url
+                }
+                alt=""
+              />            
+
+          </div>
+          <div className="small-img">
+              <img className='selection-img'
+                src={
                   data?.attributes?.img?.data?.attributes?.url
                 }
                 alt=""
                 onClick={(e) => setSelectedImg("img")}
               />
-              <img
+              <img className='selection-img'
                 src={
-                  process.env.REACT_APP_UPLOAD_URL +
                   data?.attributes?.img2?.data?.attributes?.url
                 }
                 alt=""
                 onClick={(e) => setSelectedImg("img2")}
-              />
-            </div>
-            <div className="mainImg">
-              <img
-                src={
-                  process.env.REACT_APP_UPLOAD_URL +
-                  data?.attributes[selectedImg]?.data?.attributes?.url
-                }
-                alt=""
-              />
-            </div>
+              />         
           </div>
-          <div className="right">
-            <h1>{data?.attributes?.title}</h1>
-            <span className="price">₹{data?.attributes?.price}</span>
-            <p>{data?.attributes?.desc}</p>
-            <div className="quantity">
-              <button
+        </div>
+      </div>
+      <div className="right">
+       <h1>{data?.attributes?.title}</h1>
+        <span className="price">₹{data?.attributes?.price}</span>
+       <p className='desc'>{data?.attributes?.desc}</p>
+        <div className="quantity">
+         <button className='qty-btn'
                 onClick={() =>
                   setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
                 }
@@ -108,7 +183,7 @@ const Product = () => {
                 -
               </button>
               {quantity}
-              <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
+              <button className='qty-btn' onClick={() => setQuantity((prev) => prev + 1)}>+</button>
             </div>
             <div className='move-to'>
             <button
@@ -137,10 +212,9 @@ const Product = () => {
               <hr />
               <span>FAQ</span>
             </div>
-          </div>
-        </>
-      )}
+      </div>
     </div>
+    </>
   )
 }
 

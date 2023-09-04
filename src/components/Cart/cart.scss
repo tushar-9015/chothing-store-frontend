@@ -1,20 +1,23 @@
+// .cart {
+//   margin: 2em;
+//   display: flex;
+//   justify-content: space-between;
+//   gap: 15px;
+// }
+
+// @media only screen and (max-width: 1200px) {
+//   .cart {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//   }
+// }
+
 .cart {
-  height: calc(70vh - 4rem);
-  width: 100%;
-  // border: 2px solid green;
+  margin: 2em;
+  padding: 2em;
   display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  .cart-left {
-
-    margin-left: 3em;
-  }
-
-  .cart-right {
-    margin-right: 3em;
-  }
-
+  justify-content: space-between;
 }
 
 

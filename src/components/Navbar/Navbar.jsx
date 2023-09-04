@@ -15,16 +15,12 @@ function Navbar() {
   const wishlistItems = useSelector((state) => state.wishlist.wishlistItems);
   const dispatch = useDispatch()
   return (
-    <nav className='navbar'>
-      <div className='wrapper'>
+    <nav className='nav-wrapper'>
         <div className='left'>
-        </div>
-        <div className='center'>
           <Link className='link' to='/'>ClothesBE</Link>
         </div>
         <div className='right'>
         <div className='icons'>
-          <div className='icon'>
           {userToken ? (
             <NavLink
               to="./login"
@@ -45,7 +41,6 @@ function Navbar() {
               </span>
             </NavLink>
           )}
-        </div>
             
           {/* <Link className='link' to="./login"><MdOutlinePersonOutline onClick={()=>dispatch(logout())} /></Link>
           </div> */}
@@ -84,7 +79,6 @@ function Navbar() {
           <span>{products.length}</span>
           </div> */}
         </div>
-      </div>
       </div>
       {/* {open && <Cart />} */}
       {/* {open.cart && <Cart /> }

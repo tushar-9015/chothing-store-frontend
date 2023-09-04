@@ -9,7 +9,7 @@ const Categories = () => {
             <div className='row'>
                 <img src='https://images.pexels.com/photos/720606/pexels-photo-720606.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='' />
                 <button className='btn'>
-                    <Link className='link' to='/products/1' >Women</Link>
+                    <Link className='link' to='/products/2' >Women</Link>
                 </button>
             </div>
             <div className='row'>
@@ -23,7 +23,7 @@ const Categories = () => {
                 <div className='row'>
                 <img src='https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='' />
                 <button className='btn'>
-                    <Link className='link' to='/products/2' >New Season</Link>
+                    <Link className='link' to='/products/1' >New Season</Link>
                 </button>
                 </div>
             </div>
@@ -33,7 +33,7 @@ const Categories = () => {
                         <div className='row'>
                         <img src='https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt='' />
                 <button className='btn'>
-                    <Link className='link' to='/products/2' >Men</Link>
+                    <Link className='link' to='/products/1' >Men</Link>
                 </button>
                         </div>
                     </div>
