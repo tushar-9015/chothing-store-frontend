@@ -3,25 +3,21 @@ import "./card.scss";
 import { Link } from "react-router-dom";
 
 const Card = ({ item }) => {
-  const img1= item.attributes?.img?.data?.attributes;
+  const img1 = item.attributes?.img?.data?.attributes;
   const img2 = item.attributes?.img2?.data?.attributes;
-  console.log(item);
+  // console.log(item);
   return (
     <Link className="link" to={`/product/${item.id}`}>
       <div className="card">
         <div className="image">
           {item?.attributes.isNew && <span>New Season</span>}
           <img
-            src={
-               img1?.url
-            }
+            src={img1?.url}
             alt={item.attributes.description}
             className="mainImg"
           />
           <img
-            src={
-              img2.url
-            }
+            src={img2.url}
             alt={item.attributes.description}
             className="secondImg"
           />
