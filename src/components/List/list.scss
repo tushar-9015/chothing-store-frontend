@@ -1,5 +1,14 @@
-.list{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}

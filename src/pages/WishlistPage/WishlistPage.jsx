@@ -1,13 +1,18 @@
 import React from 'react'
-import Wishlist from '../../components/Wishlist/Wishlist'
+import { useSelector } from 'react-redux'
+import WishlistCard from '../../components/WishlistCard/WishlistCard'
 import "./wishlistPage.scss"
 
 const WishlistPage = () => {
+  const wishlistItems = useSelector((state) => state.wishlist.wishlistItems)
   return (
     <div className='wishlistPage'>
       <h2>My Wishlist</h2>
-      <Wishlist className='wishlist' />
-      {/* <h1>mngo</h1> */}
+      <div className="wishlist-wrapper">
+      {wishlistItems && wishlistItems.map((item, idx) => (
+        <WishlistCard item={item} key={'wishlist-card'+ idx} />
+          ))}
+      </div>
     </div>
   )
 }

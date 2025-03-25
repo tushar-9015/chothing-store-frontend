@@ -1,104 +1,241 @@
-import React from "react";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
 import List from "../../components/List/List";
-import useFetch from "../../hooks/useFetch";
 import "./products.scss";
+import { useSelector, useDispatch } from "react-redux";
+import * as productService from "../../services/product";
+import {
+  removeAll,
+  upsertProducts,
+} from "../../redux/productSlice";
+import _ from "lodash";
 
 const Products = () => {
-  const catId = parseInt(useParams().id);
-  const [maxPrice, setMaxPrice] = useState(1000);
-  const [sort, setSort] = useState(null);
-  const [selectedSubCats, setSelectedSubCats] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [filters, setFilters] = useState({
+    categories: [],
+    type: [],
+    tags: [],
+    sort: "",
+    minPrice: "",
+    maxPrice: "",
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(2);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState(undefined);
 
-  const { data, loading, error } = useFetch(
-    `/sub-categories?[filters][categories][id][$eq]=${catId}`
-  );
+  const category = ["men", "women", "unisex"];
+  const type = ["shoes", "bags", "t-shirt", "eyewear", "shirt", "jackets"];
+  const tag = ["featured", "trending", "usual"];
+  const allProducts = useSelector((state) => state.product.products);
+  const dispatch = useDispatch();
+  console.log(allProducts);
 
-  // console.log(`here i am ${data}`);
+  const getProducts = useCallback((page = 1) => {
+    if (page >= totalPages) {
+      return;
+    }
+    setLoading(true);
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    const isChecked = e.target.checked;
+    productService
+      .getFilteredProducts(filters, page)
+      .then(
+        ({ data, pagination }) => {
+          dispatch(upsertProducts({ products: data }));
+          setCurrentPage(pagination.currentPage);
+          setTotalPages(pagination.totalPages);
+        },
+        (errors) => {
+          setErrors(errors);
+        }
+      )
+      .finally(() => {
+        setLoading(false);
+      });
+  }, [totalPages, filters, dispatch]);
 
-    setSelectedSubCats(
-      isChecked
-        ? [...selectedSubCats, value]
-        : selectedSubCats.filter((item) => item !== value)
-    );
+  const resetProducts = () => {
+    dispatch(removeAll());
+    setCurrentPage(1);
+    setTotalPages(2);
+    getProducts();
   };
 
-  console.log(selectedSubCats);
+  useEffect(() => {
+    console.log("reset");
+    resetProducts();
+  }, []);
+
+  useEffect(() => {
+    const startIndex = 9 * (currentPage - 1);
+    const endIndex = 9 * currentPage;
+    const temp = allProducts.slice(startIndex, endIndex);
+    console.log(allProducts, temp, startIndex, endIndex, currentPage);
+    setFilteredProducts(temp);
+  }, [allProducts, currentPage]);
+
+  const handleChange = (e) => {
+    const { name, value, checked } = e.target;
+    setFilters((prev) => ({
+      ...prev,
+      [name]: checked
+        ? [...prev[name], value]
+        : prev[name].filter((item) => item !== value),
+    }));
+  };
+
+  const handleSortChange = (e) => {
+    setFilters((prev) => ({
+      ...prev,
+      sort: e.target.value,
+    }));
+  };
+
+  const goToPage = _.debounce(async ( pageNumber) => {
+    setCurrentPage(pageNumber);
+    getProducts(pageNumber)
+  }, 600);
 
   return (
-    <div className="products">
-      <div className="left">
+    <div className="container">
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <h2>Filters</h2>
+
+        {/* Categories */}
         <div className="filterItem">
-          <h2>Product Categories</h2>
-          {data?.map((item) => (
-            <div className="inputItem" key={item.id}>
+          <h3>Product Categories</h3>
+          {category.map((item, index) => (
+            <div className="inputItem" key={index}>
               <input
                 type="checkbox"
-                id={item.id}
-                value={item.id}
+                name="categories"
+                value={item}
                 onChange={handleChange}
               />
-              <label htmlFor={item.id}>{item.attributes.title}</label>
+              <label>{item.charAt(0).toUpperCase() + item.slice(1)}</label>
             </div>
           ))}
         </div>
+
+        {/* Product Type */}
         <div className="filterItem">
-          <h2>Filter by price</h2>
-          <div className="inputItem">
-            <span>0</span>
+          <h3>Product Type</h3>
+          {type.map((item, index) => (
+            <div className="inputItem" key={index}>
+              <input
+                type="checkbox"
+                name="type"
+                value={item}
+                onChange={handleChange}
+              />
+              <label>{item.charAt(0).toUpperCase() + item.slice(1)}</label>
+            </div>
+          ))}
+        </div>
+
+        {/* Product Tag */}
+        <div className="filterItem">
+          <h3>Product Tag</h3>
+          {tag.map((item, index) => (
+            <div className="inputItem" key={index}>
+              <input
+                type="checkbox"
+                name="tags"
+                value={item}
+                onChange={handleChange}
+              />
+              <label>{item.charAt(0).toUpperCase() + item.slice(1)}</label>
+            </div>
+          ))}
+        </div>
+
+        {/* Price Range */}
+        <div className="filterItem">
+          <h3>Price Range</h3>
+          <div className="priceRangeWrapper">
             <input
-              type="range"
-              min={0}
-              max={1000}
-              step={100}
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
+              type="number"
+              name="minPrice"
+              placeholder="Min Price"
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, minPrice: e.target.value }))
+              }
             />
-            <span>1000</span>
+            <input
+              type="number"
+              name="maxPrice"
+              placeholder="Max Price"
+              onChange={(e) =>
+                setFilters((prev) => ({ ...prev, maxPrice: e.target.value }))
+              }
+            />
           </div>
         </div>
+
+        {/* Sort By */}
         <div className="filterItem">
-          <h2>Sort by</h2>
+          <h3>Sort By Price</h3>
           <div className="inputItem">
             <input
               type="radio"
-              id="asc"
+              name="sortBy"
               value="asc"
-              name="price"
-              onChange={(e) => setSort("asc")}
+              onChange={handleSortChange}
             />
-            <label htmlFor="asc">Lowest Price</label>
+            <label>Low to High</label>
           </div>
           <div className="inputItem">
             <input
               type="radio"
-              id="desc"
+              name="sortBy"
               value="desc"
-              name="price"
-              onChange={(e) => setSort("desc")}
+              onChange={handleSortChange}
             />
-            <label htmlFor="desc">Highest Price</label>
+            <label>High to Low</label>
           </div>
         </div>
-      </div>
-      <div className="right">
+
+        {/* Apply Filters Button */}
+        <button className="applyFiltersBtn" onClick={resetProducts}>
+          Apply Filters
+        </button>
+      </aside>
+
+      {/* Main Content */}
+      <main className="main-content">
         <img
           className="catImg"
           src="https://images.pexels.com/photos/1074535/pexels-photo-1074535.jpeg?auto=compress&cs=tinysrgb&w=1600"
           alt=""
         />
-        <List
-          catId={catId}
-          maxPrice={maxPrice}
-          sort={sort}
-          subCats={selectedSubCats}
-        />
-      </div>
+
+        {/* List Component */}
+        <List products={filteredProducts} loading={loading} errors={errors} />
+
+        {/* Pagination */}
+        <div className="pagination" >
+          <button className="page-button" disabled={currentPage <= 1} onClick={() => goToPage(currentPage - 1)}>
+            Prev
+          </button>
+
+          <span>
+            <input
+              type="number"
+              min={1}
+              max={totalPages}
+              step="1"
+              value={currentPage}
+              onChange={(e) => goToPage(parseInt(e.target.value, 10))}
+            />{" "}
+            / {totalPages}
+          </span>
+
+          <button className="page-button" disabled={currentPage >= totalPages}  onClick={() => goToPage(currentPage + 1)}>
+            Next
+          </button>
+        </div>
+      </main>
     </div>
   );
 };

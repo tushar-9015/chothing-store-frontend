@@ -1,36 +1,25 @@
 import React from "react";
 import "./list.scss";
 import Card from "../Card/Card";
-import useFetch from "../../hooks/useFetch";
 
-const List = ({ subCats, maxPrice, sort, catId }) => {
+const List = ({ products, loading, errors }) => {
 
-  let fetchUrlString = `/products?populate=*&[filters][categories][id]=${catId}&[filters][price][$lte]=${maxPrice}`
-
-  // console.log(subCats);
-  const subCatString = subCats.map(
-    (item, idx) => `[filters][sub_categories][id][$in][${idx}]=${item}`
-  ).join('&');
-
-  if(subCats.length > 0){
-    fetchUrlString = fetchUrlString + '&' + subCatString
+  if(loading){
+    return <p>Loading...</p>
   }
 
-  if(sort){
-    fetchUrlString = fetchUrlString + `&sort[0]=price:${sort}`
+  if(errors) {
+    return <p>Error - {errors[0]}</p>
   }
 
-  console.log(fetchUrlString);
-  
-  
-  const { data, loading, error } = useFetch( fetchUrlString);
+  if (products.length === 0) return <p>No products found</p>;
 
   return (
     <div className="list">
-      {loading
-        ? "loading"
-        : data?.map((item) => <Card item={item} key={item.id} />)}
-    </div>
+      {products.map((item) => (
+        <Card item={item} key={item._id} />
+      ))}
+    </div>        
   );
 };
 

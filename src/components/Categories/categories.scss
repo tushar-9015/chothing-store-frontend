@@ -1,59 +1,73 @@
 .categories {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  padding: 2rem;
+
+  .col {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease; /* Add smooth transition for scaling effect */
+  }
+
+  .row {
+    position: relative;
     display: flex;
-    height: 70vh;
-    gap: 1em;
-    margin: 1em;
-  
-    .col {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 1em;
-    }
-  
-    .col-l {
-      flex: 2;
-    }
-  
-    .row{
-      flex:1;
-      display: flex;
-      gap: 1em;
-      position: relative;
-      overflow: hidden;
-  
-    }
-
-    .row button {
-        position: absolute;
-        min-width: 100px;
-        width: fit-content;
-        height: 50px;
-        padding: 10px;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        margin: auto;
-        cursor: pointer;
-        border: none;
-        background-color: white;
-        text-transform: uppercase;
-        font-weight: 500;
-      }
-
-      .row img{
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 
-  @media (max-width:600px) {
-    .categories {
-      display: flex;
-      flex-direction: column;
-      height: 10%;
-    }
-
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s ease; /* Add smooth transition for scaling effect */
   }
+
+  .btn {
+    position: absolute;
+    bottom: 2rem;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 1rem 2rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  .link {
+    text-decoration: none;
+    color: white;
+  }
+
+  /* Hover effect to scale image */
+  .row:hover img {
+    transform: scale(1.1); /* Scale the image when hovered */
+  }
+
+  .col:hover {
+    transform: scale(1.05); /* Slightly scale the column on hover for effect */
+  }
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}

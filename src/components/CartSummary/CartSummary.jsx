@@ -1,40 +1,40 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import "./cartSummary.scss"
+import React from 'react';
+import "./cartSummary.scss";
 
-
-const CartSummary = () => {
-    const products = useSelector((state)=>state.cart.products)
-    
+const CartSummary = ({ products = [] }) => {  // Default value to prevent undefined error
   const totalPrice = () => {
-    let total = 0;
-    products.forEach((item)=> (total += item.quantity*item.price));
-    return total.toFixed(2);
-  }
+    return products.reduce((total, item) => {
+      const price = item.onSale ? item.salePrice : item.price;
+      return total + item.quantity * price;
+    }, 0).toFixed(2);
+  };
+
   return (
     <div className='cart-summary'>
-        <h2>Your Order</h2>
-        <div className='price-detail-col'>
-        <p className="price-detail-row">
-            <span>{products.length > 1 ? "UNIQUE ITEMS:" : "UNIQUE ITEM:" }</span>
-            <span>({products.length}{products.length > 1 ? " items" : " item" })</span>
+      <h2>Your Order</h2>
+      <div className='price-detail-col'>
+        <p className='price-detail-row'>
+          <span>{products.length === 1 ? "UNIQUE ITEM:" : "UNIQUE ITEMS:"}</span>
+          <span>({products.length} {products.length === 1 ? "item" : "items"})</span>
         </p>
-        <p className="price-detail-row">
-            <span>Total MRP:</span>
-            <span>{totalPrice()}</span>
+        <p className='price-detail-row'>
+          <span>Total MRP:</span>
+          <span>₹{products.length > 0 ? totalPrice() : "0.00"}</span>
         </p>
-        <p className="price-detail-row">
-            <span>Delivery Charges:</span>
-            <span className="delivery-charges">Free</span>
+        <p className='price-detail-row'>
+          <span>Delivery Charges:</span>
+          <span className='delivery-charges'>Free</span>
         </p>
         <hr />
-        <p className="price-detail-row total-amount">
-           <span>Total Amount:</span> <span>₹{totalPrice()}</span>
+        <p className='price-detail-row total-amount'>
+          <span>Total Amount:</span> <span>₹{products.length > 0 ? totalPrice() : "0.00"}</span>
         </p>
-        <button className='checkout-btn'>PROCEED TO CHECKOUT</button>
-        </div>
+        <button className='checkout-btn' disabled={products.length === 0}>
+          PROCEED TO CHECKOUT
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default CartSummary
+export default CartSummary;

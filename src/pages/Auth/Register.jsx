@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { registerUser } from '../../redux/authAction'
+import React, { useState } from "react";
 import "./auth.scss";
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../../services/auth";
 
 const Register = () => {
   const [signupForm, setSignupForm] = useState({
@@ -10,79 +9,105 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-  })
-  
-  const { loading, userToken, error, success } = useSelector(
-    (state) => state.auth
-  )
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const dispatch = useDispatch()
-
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setSignupForm((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  const submitForm = (e) => {
-    console.log(e);
-    // check if passwords match
-    e.preventDefault()
-     if (signupForm.password !== signupForm.confirmPassword) {
-      alert('Password mismatch')
+  const submitForm = async (e) => {
+    e.preventDefault();
+
+    // Basic validation
+    if (!signupForm.username || !signupForm.email || !signupForm.password || !signupForm.confirmPassword) {
+      setError("All fields are required.");
+      return;
     }
-    // transform email string to lowercase to avoid case sensitivity issues in login
-    signupForm.email = signupForm.email.toLowerCase()
-    dispatch(registerUser({username: signupForm.username, email:  signupForm.email, password: signupForm.password}))
-    
-  }
 
-  const navigate = useNavigate()
+    // Check if passwords match
+    if (signupForm.password !== signupForm.confirmPassword) {
+      setError("Passwords do not match!");
+      return;
+    }
 
-  useEffect(() => {
-    // redirect user to login page if registration was successful
-    // if (success) navigate('/login')
-    console.log(success);
-    // redirect authenticated user to profile screen
-    if(userToken) navigate('/')
-  }, [navigate, userToken, success])
+    setError(null);
+    setLoading(true);
+
+    try {
+      await register(signupForm.username, signupForm.email.toLowerCase(), signupForm.password);
+      navigate("/login"); // Redirect to login after successful registration
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="form-container">
-      <form onSubmit={e => submitForm(e)} className="form">
-        <h2 className="form-title">SignUp</h2>
+      <form onSubmit={submitForm} className="form">
+        <h2 className="form-title">Sign Up</h2>
+
+        {error && <p className="error-message">{error}</p>}
+
         <input
           type="text"
           name="username"
-          placeholder='username'
+          placeholder="Username"
           value={signupForm.username}
           onChange={handleChange}
+          required
+          className="input-field"
         />
+
         <input
           type="email"
           name="email"
-          placeholder='email'
+          placeholder="Email"
           value={signupForm.email}
           onChange={handleChange}
+          required
+          className="input-field"
         />
+
         <input
+          type="password"
           name="password"
-          placeholder='password'
+          placeholder="Password"
           value={signupForm.password}
           onChange={handleChange}
+          required
+          className="input-field"
         />
+
         <input
+          type="password"
           name="confirmPassword"
-          placeholder='confirmPassword'
+          placeholder="Confirm Password"
           value={signupForm.confirmPassword}
           onChange={handleChange}
+          required
+          className="input-field"
         />
-        <button type="submit" className="form-btn">
-          Signup
+
+        <button type="submit" className="form-btn" disabled={loading}>
+          {loading ? "Signing up..." : "Sign Up"}
         </button>
+
+        <div className="form-footer">
+          <span className="form-footer-text">Already have an account?</span>
+          <Link to="/login" className="btn-link-primary" replace>
+            Log In
+          </Link>
+        </div>
       </form>
     </div>
   );
-}
+};
 
-export default Register
+export default Register;

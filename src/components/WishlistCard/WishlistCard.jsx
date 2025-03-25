@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch} from 'react-redux'
-import { addToCart } from '../../redux/cartReducer'
-import { removeWishlistItem } from '../../redux/wishlistReducer'
+import { addToCart } from '../../redux/cartSlice'
+import { removeWishlistItem } from '../../redux/wishlistSlice'
 import "./wishlistCard.scss"
 import {TiShoppingCart } from 'react-icons/ti';
 import { MdOutlineRemoveCircleOutline } from 'react-icons/md'
 import { Link } from 'react-router-dom'
+import { getWishlist } from '../../services/wishlist'
 
 const WishlistCard = ({ item }) => {
-  const title = item?.title ?? ''
-  const desc = item?.desc ?? ''
-    const dispatch = useDispatch()
-
+  const title = item?.name ?? ''
+  const desc = item?.description ?? ''
+  const dispatch = useDispatch()
 
 
     const moveToCart = () => {

@@ -1,34 +1,38 @@
 import React from "react";
 import "./card.scss";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { upsertProduct } from "../../redux/productSlice";
 
 const Card = ({ item }) => {
-  const img1 = item.attributes?.img?.data?.attributes;
-  const img2 = item.attributes?.img2?.data?.attributes;
-  // console.log(item);
+  const img = item?.images?.url;
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch(upsertProduct({ id: item._id })); // Fixed payload
+  };
+
   return (
-    <Link className="link" to={`/product/${item.id}`}>
-      <div className="card">
-        <div className="image">
-          {item?.attributes.isNew && <span>New Season</span>}
+    <div className="card" onClick={handleClick}>
+      <Link className="link" to={`/product/${item._id}`}>
+        {/* Image Section */}
+        <div className="image-container">
           <img
-            src={img1?.url}
-            alt={item.attributes.description}
-            className="mainImg"
-          />
-          <img
-            src={img2.url}
-            alt={item.attributes.description}
-            className="secondImg"
+            src={img}
+            alt={item?.description || "Product image"}
+            className="product-image"
           />
         </div>
-        <h2>{item?.attributes.title}</h2>
-        <div className="prices">
-          <h3>₹{item.oldPrice || item?.attributes.price + 100}</h3>
-          <h3>₹{item?.attributes.price}</h3>
+        {/* Product Information Section */}
+        <div className="card-content">
+          <h2 className="product-title">{item?.name}</h2>
+          <div className="price-info">
+            {item.salePrice && <span className="old-price">₹{item.salePrice}</span>}
+            <span className="current-price">₹{item?.price}</span>
+          </div>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

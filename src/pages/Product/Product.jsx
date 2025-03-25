@@ -1,221 +1,120 @@
-import React, { useState } from 'react'
-import './product.scss'
-import {TiShoppingCart } from 'react-icons/ti';
-import { MdOutlineFavorite } from 'react-icons/md'
-import useFetch from '../../hooks/useFetch';
+import React, { useEffect, useState } from 'react';
+import './product.scss';
+import { TiShoppingCart } from 'react-icons/ti';
+import { MdOutlineFavorite } from 'react-icons/md';
 import { useParams, useNavigate } from 'react-router-dom';
-import { addToCart } from '../../redux/cartReducer';
-import { addToWishlist } from '../../redux/wishlistReducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '../../redux/cartSlice';
+import { addToWishlist } from '../../redux/wishlistSlice';
+import { getProduct } from '../../services/product';
+import { upsertCart } from '../../services/cart';
+import { addWishlist } from '../../services/wishlist';
+import { upsertProduct } from '../../redux/productSlice';
 
 const Product = () => {
-  const id = useParams().id
-  const [selectedImg, setSelectedImg] = useState("img")
-  const [quantity, setQuantity] = useState(1)
-  const {userToken} = useSelector((state)=> state.auth);
-  const navigate = useNavigate()
+  const { id: productId } = useParams();
+  const [quantity, setQuantity] = useState(1);
+  const { userToken } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const dispatch = useDispatch()
-  const { data, loading, error } = useFetch(
-    `/products/${id}?populate=*`
-  )
+  const selectedProduct = useSelector((state) => {
+    return state.product.products.find((x) => x._id === productId);
+  });
 
-  const toggleWishlist =() => {
-    if(!userToken) {
-      navigate("/login")
-      return ;
-    } else {
-      dispatch(
-        addToWishlist({
-         item:
-          {
-          id: data.id,
-          title: data.attributes.title,
-          desc: data.attributes.desc,
-          price: data.attributes.price,
-          img: data.attributes.img.data.attributes.url,
-          quantity: 1,
-          }
-        })
-      )
+  useEffect(() => {
+    if (!selectedProduct && productId) {
+      const fetchProduct = async () => {
+        try {
+          const product = await getProduct(productId);
+          dispatch(upsertProduct({product}));
+        } catch (error) {
+          console.error('Error fetching product:', error);
+        }
+      };
+      fetchProduct();
     }
-  }
+  }, [productId, selectedProduct, dispatch]);
 
-  const toggleCart =() => {
-    if(!userToken) {
-      navigate("/login")
-      return ;
-    } else {
-      dispatch(
-        addToCart({
-          item: 
-          {
-          id: data.id,
-          title: data.attributes.title,
-          desc: data.attributes.desc,
-          price: data.attributes.price,
-          img: data.attributes.img.data.attributes.url,
-          quantity,
-          }
-        })
-      )
+  const handleWishlist = () => {
+    if (!userToken) {
+      return navigate('/login');
     }
-  }
+  
+    if (!selectedProduct) {
+      return console.error("Invalid product");
+    }
+  
+    addWishlist({ id: selectedProduct._id });
+  
+    dispatch(addToWishlist({
+      id: selectedProduct._id,
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      img: selectedProduct.images?.url || '',
+    }));
+  };
+
+  const handleCart = () => {
+    if (!userToken) {
+      return navigate('/login');
+    }
+  
+    if (!selectedProduct || quantity <= 0) {
+      return console.error("Invalid product or quantity");
+    }
+  
+    upsertCart( selectedProduct._id, quantity );
+  
+    dispatch(addToCart({
+      id: selectedProduct._id,
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      img: selectedProduct.images?.url || '',
+      quantity,
+    }));
+  };
+
   return (
-    // <div className="product">
-    //   {loading ? (
-    //     "loading"
-    //   ) : (
-    //     <>
-    //       <div className="left">
-    //         <div className="images">
-    //           <img className='apple'
-    //             src={
-    //               data?.attributes?.img?.data?.attributes?.url
-    //             }
-    //             alt=""
-    //             onClick={(e) => setSelectedImg("img")}
-    //           />
-    //           <img className='apple'
-    //             src={
-    //               data?.attributes?.img2?.data?.attributes?.url
-    //             }
-    //             alt=""
-    //             onClick={(e) => setSelectedImg("img2")}
-    //           />
-    //         </div>
-    //         <div className="mainImg">
-    //           <img
-    //             src={
-    //               data?.attributes[selectedImg]?.data?.attributes?.url
-    //             }
-    //             alt=""
-    //           />
-    //         </div>
-    //       </div>
-    //       <div className="right">
-    //         <h1>{data?.attributes?.title}</h1>
-    //         <span className="price">₹{data?.attributes?.price}</span>
-    //         <p>{data?.attributes?.desc}</p>
-    //         <div className="quantity">
-    //           <button
-    //             onClick={() =>
-    //               setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
-    //             }
-    //           >
-    //             -
-    //           </button>
-    //           {quantity}
-    //           <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
-    //         </div>
-    //         <div className='move-to'>
-    //         <button
-    //           className="add"
-    //           onClick={toggleCart}
-    //         >
-    //           <TiShoppingCart /> ADD TO CART
-    //         </button>
-    //         <button
-    //           className="add"
-    //           onClick={toggleWishlist}
-    //         >
-    //           <MdOutlineFavorite /> ADD TO WISHLIST
-    //         </button>
-    //         </div>
-    //         <div className="info">
-    //           <span>Vendor: Polo</span>
-    //           <span>Product Type: T-Shirt</span>
-    //           <span>Tag: T-Shirt, Women, Top</span>
-    //         </div>
-    //         <hr />
-    //         <div className="info">
-    //           <span>DESCRIPTION</span>
-    //           <hr />
-    //           <span>ADDITIONAL INFORMATION</span>
-    //           <hr />
-    //           <span>FAQ</span>
-    //         </div>
-    //       </div>
-    //     </>
-    //   )}
-    // </div>
-    <>
-    <div className="product">
-      <div className="left">
-        <div className="images">
-          <div className="main-img">
-            <img className='imgd'
-                src={
-                  data?.attributes[selectedImg]?.data?.attributes?.url
-                }
-                alt=""
-              />            
+    <div className="product-container">
+      <div className="product-left">
+        <img
+          src={selectedProduct?.images?.url || '/placeholder.jpg'}
+          alt={selectedProduct?.name || 'Product Image'}
+          className="product-image"
+        />
+      </div>
+      <div className="product-right">
+        <h1 className="product-title">{selectedProduct?.name}</h1>
+        <p className="product-price">₹{selectedProduct?.price}</p>
+        <p className="product-description">{selectedProduct?.description}</p>
+        <p className="product-color">Color: {selectedProduct?.color}</p>
 
-          </div>
-          <div className="small-img">
-              <img className='selection-img'
-                src={
-                  data?.attributes?.img?.data?.attributes?.url
-                }
-                alt=""
-                onClick={(e) => setSelectedImg("img")}
-              />
-              <img className='selection-img'
-                src={
-                  data?.attributes?.img2?.data?.attributes?.url
-                }
-                alt=""
-                onClick={(e) => setSelectedImg("img2")}
-              />         
-          </div>
+        <div className="product-quantity">
+          <button onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}>
+            -
+          </button>
+          <span>{quantity}</span>
+          <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
+        </div>
+
+        <div className="product-actions">
+          <button onClick={handleCart} className="cart-button">
+            <TiShoppingCart /> Add to Cart
+          </button>
+          <button onClick={handleWishlist} className="wishlist-button">
+            <MdOutlineFavorite /> Add to Wishlist
+          </button>
+        </div>
+
+        <div className="product-info">
+          <span>Category: {selectedProduct?.category}</span>
+          <span>Product Type: {selectedProduct?.type}</span>
+          <span>Tag: {selectedProduct?.tag}</span>
         </div>
       </div>
-      <div className="right">
-       <h1>{data?.attributes?.title}</h1>
-        <span className="price">₹{data?.attributes?.price}</span>
-       <p className='desc'>{data?.attributes?.desc}</p>
-        <div className="quantity">
-         <button className='qty-btn'
-                onClick={() =>
-                  setQuantity((prev) => (prev === 1 ? 1 : prev - 1))
-                }
-              >
-                -
-              </button>
-              {quantity}
-              <button className='qty-btn' onClick={() => setQuantity((prev) => prev + 1)}>+</button>
-            </div>
-            <div className='move-to'>
-            <button
-              className="add"
-              onClick={toggleCart}
-            >
-              <TiShoppingCart /> ADD TO CART
-            </button>
-            <button
-              className="add"
-              onClick={toggleWishlist}
-            >
-              <MdOutlineFavorite /> ADD TO WISHLIST
-            </button>
-            </div>
-            <div className="info">
-              <span>Vendor: Polo</span>
-              <span>Product Type: T-Shirt</span>
-              <span>Tag: T-Shirt, Women, Top</span>
-            </div>
-            <hr />
-            <div className="info">
-              <span>DESCRIPTION</span>
-              <hr />
-              <span>ADDITIONAL INFORMATION</span>
-              <hr />
-              <span>FAQ</span>
-            </div>
-      </div>
     </div>
-    </>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

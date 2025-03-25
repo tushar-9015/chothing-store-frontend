@@ -1,86 +1,89 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { userLogin } from '../../redux/authAction';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import "./auth.scss"
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./auth.scss";
+import { login } from "../../services/auth.js";
+import  * as authSlice from '../../redux/authSlice.js'
 
 const Login = () => {
-  const [loginForm, setLoginForm] = useState({
-    email: "",
-    password: "",
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  });
 
-  const { loading, userToken, error } = useSelector((state) => state.auth)
-  const dispatch = useDispatch() 
 
+  const userToken = useSelector((state) => state.auth.userToken);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleUpdate = (event) => {
     const { name, value } = event.target;
-    setLoginForm((pervFormData) => ({ ...pervFormData, [name]: value}));
+    setLoginForm((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  const submitForm = (e) => {
-    e.preventDefault()
-    dispatch(userLogin( {email: loginForm.email, password: loginForm.password }))
-  }
- 
-  const navigate = useNavigate()
+  const submitForm = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-  // redirect authenticated user to profile screen
+    try {
+      const data = await login(loginForm.email, loginForm.password);
+      dispatch(authSlice.login(data)); // Dispatch login action with API response
+      navigate("/"); // Redirect on success
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Redirect authenticated user to home if already logged in
   useEffect(() => {
     if (userToken) {
-      navigate('/')
+      navigate("/");
     }
-  }, [navigate, userToken])
- 
+  }, [navigate, userToken]);
 
-  // return (
-  //   <div className='login'>
-  //    <div className="wrapper">
-  //     <form onSubmit={e => submitForm(e)}>
-  //       <label>Email:
-  //         <input type='email' name='email' placeholder='xyz@gmail.com' required value={loginForm.email} onChange={handleUpdate}/>
-  //       </label>
-  //       <label>Password:
-  //         <input type='password' name='password' value={loginForm.password} required onChange={handleUpdate} />
-  //       </label>
-  //       <button type='submit' className='btn' disabled={loading}>Login</button>
-  //     </form>
-  //    </div>
-  //   </div>
-  // )
-
-    return (
+  return (
     <div className="form-container">
-      <form onSubmit={e => submitForm(e)} className="form">
+      <form onSubmit={submitForm} className="form">
         <h2 className="form-title">Login</h2>
-        <input
-          type="email"
-          name="email"
-          placeholder='email'
-          value={loginForm.email}
-          onChange={handleUpdate}
-        />
-        <input
-          name="password"
-          placeholder='password'
-          value={loginForm.password}
-          onChange={handleUpdate}
-        />
-        <button type="submit" className="form-btn">
-          LOGIN
+        <div className="input-group">
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={loginForm.email}
+            onChange={handleUpdate}
+            required
+            className="input-field"
+          />
+        </div>
+        <div className="input-group">
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={loginForm.password}
+            onChange={handleUpdate}
+            required
+            className="input-field"
+          />
+        </div>
+        {error && <p className="error-message">{error}</p>}
+        <button type="submit" className="form-btn" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
         </button>
         <div className="form-footer">
           <span className="form-footer-text">Don't have an account?</span>
-          <Link to="/signup" className="btn-link-primary" replace>
+          <Link to="/signup" onClick={(e) => e.stopPropagation()} className="btn-link-primary" replace>
             Create One
           </Link>
         </div>
       </form>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

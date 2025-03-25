@@ -1,46 +1,100 @@
 .form-container {
-    height: 70vh;
     display: flex;
-    align-items: center;
     justify-content: center;
-    // border: 1px solid red;
-
-    h2 {
-        margin: 1em 0;
-        font-size: 2rem;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+    padding: 0 2rem;
+  }
+  
+  .form {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .form-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .input-group {
+    margin-bottom: 1rem;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+  }
+  
+  .input-field:focus {
+    border: 1px solid #007bff;
+    outline: none;
+  }
+  
+  .form-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .form-btn:disabled {
+    background-color: #aaa;
+  }
+  
+  .form-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 1rem;
+  }
+  
+  .form-footer {
+    margin-top: 1rem;
+  }
+  
+  .form-footer-text {
+    font-size: 0.875rem;
+    color: #555;
+  }
+  
+  .btn-link-primary {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+    margin-left: 0.5rem;
+  }
+  
+  .btn-link-primary:hover {
+    text-decoration: underline;
+  }
+  
+  @media (max-width: 768px) {
+    .form-container {
+      padding: 0 1rem;
     }
-
+  
     .form {
-        height: 80%;
-        width: 50%;
-        // border: 2px solid palegreen;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 1.2em;
+      padding: 1.5rem;
     }
-
-    input  {
-        width: 50%;
-        height: 4em;
-        border: none;
-        border-bottom: 1px solid gray;
-    }
-
-    .form-btn{
-        background-color: rgb(44, 68, 147);
-        color: white;
-        width: 50%;
-        height: 4em;
-        border-radius: 5px;
-        border: none;
-    }
-
-    .btn-link-primary{
-        color: rgb(44, 68, 147)
-
-    }
-
-}
-
+  }
+  
